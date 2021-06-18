@@ -1,2 +1,2 @@
 # CHOpt
-Continuous HyperOptimizatoin for Freqtrade
+Continuous Hyperparameter Optimizatoin for Freqtrade
