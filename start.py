@@ -1,13 +1,5 @@
 import logging
 from typing import Any, Dict
-
-from freqtrade.exceptions import OperationalException
-from pprint import pprint
-from freqtrade.exchange import timeframe_to_minutes, timeframe_to_prev_date
-import datetime
-
-from freqtrade.commands import start_backtesting, start_convert_data, start_download_data
-from .utils import hyperopt_run, setup_chopt_configuration, human_report_hyperopt
 from .chopt import ContinuousHyperOpt
 
 import rapidjson
