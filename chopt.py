@@ -75,6 +75,7 @@ class ContinuousHyperOpt:
             if not self._download_data(download_args):
 
                 data_file_name = self.pair_trades_filename(Path(self.data_dir), pair)
+                data_downloaded = False
                 for i in range(1, 4):
                     logger.info(
                         f"Data download finished with error, trying to remove data file and download from scratch ({i})...")
@@ -82,10 +83,13 @@ class ContinuousHyperOpt:
                         os.remove(data_file_name)
                     except OSError:
                         pass
-                    if self._download_data(download_args):
-                        return True
+                    data_downloaded = self._download_data(download_args)
+                    if data_downloaded:
+                        break
 
-                return False
+                if not data_downloaded:
+                    # nothing helped
+                    return False
 
         return True
 
