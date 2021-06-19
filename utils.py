@@ -11,7 +11,7 @@ from freqtrade.configuration import Configuration
 logger = logging.getLogger(__name__)
 
 
-def hyperopt_run(args: Dict[str, Any]):
+def hyperopt_run(config: Dict[str, Any]):
     """
     Start hyperopt script
     :param args: Cli args from Arguments()
@@ -25,8 +25,6 @@ def hyperopt_run(args: Dict[str, Any]):
     except ImportError as e:
         raise OperationalException(
             f"{e}. Please ensure that the hyperopt dependencies are installed.") from e
-    # Initialize configuration
-    config = setup_chopt_configuration(args)
 
     logger.info('Starting freqtrade in Hyperopt mode')
 

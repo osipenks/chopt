@@ -76,7 +76,8 @@ class ContinuousHyperOpt:
 
                 data_file_name = self.pair_trades_filename(Path(self.data_dir), pair)
                 for i in range(1, 4):
-                    logger.info(f"Data download finished with error, trying to remove data file and download from scratch ({i})...")
+                    logger.info(
+                        f"Data download finished with error, trying to remove data file and download from scratch ({i})...")
                     try:
                         os.remove(data_file_name)
                     except OSError:
@@ -106,25 +107,23 @@ class ContinuousHyperOpt:
 
         logger.info(f'Loaded config for {self.name}, {len(self.pair_list)} pairs in whitelist')
 
-        hyperopt_args = {
-            'hyperopt_loss': self.hyperopt_loss,
-            'strategy': self.strategy,
-            'config': self.config_files,
-            'pairs': self.pair_list,
-            'timerange': self.timerange_str,
-            'dry_run_wallet': self.dry_run_wallet,
-            'spaces': self.hyperopt_spaces,
-            'epochs': self.hyperopt_epochs,
-            'hyperopt_random_stat': self.hyperopt_random_stat,
-            'hyperopt_enable_protections': self.hyperopt_enable_protections,
-            'hyperopt_min_trades': self.hyperopt_min_trades,
-            'hyperopt_jobs': self.hyperopt_jobs,
-        }
+        config = setup_chopt_configuration({
+                'hyperopt_loss': self.hyperopt_loss,
+                'strategy': self.strategy,
+                'config': self.config_files,
+                'pairs': self.pair_list,
+                'timerange': self.timerange_str,
+                'dry_run_wallet': self.dry_run_wallet,
+                'spaces': self.hyperopt_spaces,
+                'epochs': self.hyperopt_epochs,
+                'hyperopt_random_stat': self.hyperopt_random_stat,
+                'hyperopt_enable_protections': self.hyperopt_enable_protections,
+                'hyperopt_min_trades': self.hyperopt_min_trades,
+                'hyperopt_jobs': self.hyperopt_jobs,
+            })
+        config['pairlists'] = [{'method': 'StaticPairList'}]
 
-        # pair_list = ['ADA/EUR', 'ETH/EUR', 'MINA/EUR']
-        # pair_list = ['LTC/EUR']
-
-        hyperopt_res = hyperopt_run(hyperopt_args)
+        hyperopt_res = hyperopt_run(config)
 
         if not hyperopt_res.get('results_metrics', False):
             logger.error(f'Hyperopt finished, no results obtained')
