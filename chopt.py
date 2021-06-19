@@ -93,6 +93,7 @@ class ContinuousHyperOpt:
 
                 if not data_downloaded:
                     # nothing helped
+                    # todo: exclude pair
                     return False
 
         return True
