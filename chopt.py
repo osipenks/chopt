@@ -114,6 +114,7 @@ class ContinuousHyperOpt:
                 'pairs': self.pair_list,
                 'timerange': self.timerange_str,
                 'dry_run_wallet': self.dry_run_wallet,
+                'dry_run': True,
                 'spaces': self.hyperopt_spaces,
                 'epochs': self.hyperopt_epochs,
                 'hyperopt_random_stat': self.hyperopt_random_stat,
@@ -122,6 +123,7 @@ class ContinuousHyperOpt:
                 'hyperopt_jobs': self.hyperopt_jobs,
             })
         config['pairlists'] = [{'method': 'StaticPairList'}]
+        config['dry_run'] = True
 
         hyperopt_res = hyperopt_run(config)
 
