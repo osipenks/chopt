@@ -25,6 +25,8 @@ class ContinuousHyperOpt:
         self.back_period = args.get("backperiod", 864)
         self.config = setup_chopt_configuration(args)
 
+        self.config['dry_run'] = True
+
         self.bot_name = self.config['bot_name']
         self.timeframe = self.config['timeframe']
         self.pair_list = self.config["pairs"]
@@ -66,6 +68,8 @@ class ContinuousHyperOpt:
             'timeframes': [self.timeframe],
             'pairs': self.config['pairs'],
             'timerange': self.timerange_str,
+            'dry_run': True,
+            'dry_run_wallet': 1000,
         }
 
         for pair in self.config['pairs']:
