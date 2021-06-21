@@ -25,6 +25,6 @@ def start_continuous_hyperopt(args: Dict[str, Any]) -> None:
     logger.info('Data download finished. Starting HyperOpt...   ')
 
     chopt.hyperopt_epochs = 900
-    chopt.hyperopt_jobs = 3
+    chopt.hyperopt_jobs = 4
     chopt.run_hyperopt()
 
