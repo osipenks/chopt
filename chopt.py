@@ -7,6 +7,7 @@ from pprint import pprint
 from freqtrade.exchange import timeframe_to_minutes, timeframe_to_prev_date
 from freqtrade.misc import pair_to_filename
 import datetime
+from freqtrade.enums import RunMode
 
 from freqtrade.commands import start_backtesting, start_convert_data, start_download_data
 from .utils import hyperopt_run, setup_chopt_configuration, human_report_hyperopt
@@ -130,6 +131,7 @@ class ContinuousHyperOpt:
                 'hyperopt_enable_protections': self.hyperopt_enable_protections,
                 'hyperopt_min_trades': self.hyperopt_min_trades,
                 'hyperopt_jobs': self.hyperopt_jobs,
+                'runmode': RunMode.HYPEROPT,
             })
         config['pairlists'] = [{'method': 'StaticPairList'}]
         config['dry_run'] = True
