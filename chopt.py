@@ -135,6 +135,7 @@ class ContinuousHyperOpt:
             })
         config['pairlists'] = [{'method': 'StaticPairList'}]
         config['dry_run'] = True
+        config['runmode'] = RunMode.HYPEROPT
 
         hyperopt_res = hyperopt_run(config)
 
