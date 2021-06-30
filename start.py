@@ -19,8 +19,8 @@ def start_continuous_hyperopt(args: Dict[str, Any]) -> None:
 
     chopt = ContinuousHyperOpt(args)
 
-    if not chopt.load_data():
-        return
+    # if not chopt.load_data():
+    #     return
 
     logger.info('Data download finished. Starting HyperOpt...   ')
 
