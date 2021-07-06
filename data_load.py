@@ -76,13 +76,13 @@ class DataDownload:
         download_args = {
             'config': self.config_files,
             'timeframes': [self.timeframe],
-            'pairs': self.config['pairs'],
+            'pairs': self.pair_list,
             'timerange': self.timerange_str,
             'dry_run': True,
             'dry_run_wallet': 1000,
         }
 
-        for pair in self.config['pairs']:
+        for pair in self.pair_list:
 
             download_args.update({'pairs': [pair]})
 
