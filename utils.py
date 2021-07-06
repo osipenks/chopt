@@ -63,15 +63,25 @@ def hyperopt_run(config: Dict[str, Any]):
     return hyperopt_res
 
 
+def setup_configuration(args: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Prepare the configuration
+    :param args: Cli args from Arguments()
+    :return: Configuration
+    """
+    configuration = Configuration(args)
+
+    return configuration.get_config()
+
+
 def setup_chopt_configuration(args: Dict[str, Any]) -> Dict[str, Any]:
     """
     Prepare the configuration for the Hyperopt module
     :param args: Cli args from Arguments()
     :return: Configuration
     """
-    configuration = Configuration(args)
 
-    config = configuration.get_config()
+    config = setup_configuration(args)
 
     if (config['stake_amount'] != constants.UNLIMITED_STAKE_AMOUNT
             and config['stake_amount'] > config['dry_run_wallet']):

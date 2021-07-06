@@ -25,7 +25,7 @@ ARGS_COMMON = ["verbosity", "logfile", "version",
                "pairs_file", "days", "new_pairs_days",
                "download_trades", "exchange", "timeframes", "erase",
                "dataformat_trades", "strategy", "strategy_path",
-               "backperiod",
+               "backperiod", "process"
                ]
 
 NO_CONF_REQURIED = ["convert-data", "convert-trade-data", "download-data", "list-timeframes",
@@ -43,7 +43,16 @@ AVAILABLE_CLI_OPTIONS.update({
                 type=int,
                 metavar='INT',
             ),
+
+            "process": Arg(
+                '-prc', '--process',
+                help='Process',
+                type=str,
+                metavar='STR',
+            ),
+
         })
+
 
 class ChoptArguments(Arguments):
     """

@@ -1,20 +1,30 @@
 import logging
-import os.path
 from typing import Any, Dict
-import json
 
 from pprint import pprint
 from freqtrade.exchange import timeframe_to_minutes, timeframe_to_prev_date
-from freqtrade.misc import pair_to_filename
 import datetime
 from freqtrade.enums import RunMode
 
-from freqtrade.commands import start_backtesting, start_convert_data, start_download_data
 from .utils import hyperopt_run, setup_chopt_configuration, human_report_hyperopt
+from .model_storage import ModelStorage
 
-from pathlib import Path
 
 logger = logging.getLogger(__name__)
+
+
+def start_continuous_hyperopt(args: Dict[str, Any]) -> None:
+    """
+    Start continuous hyperopt
+    :param args: Cli args from Arguments()
+    :return: None
+    """
+    logger.info('Starting continuous hyperopt...')
+
+    chopt = ContinuousHyperOpt(args)
+    chopt.hyperopt_epochs = 25
+    chopt.hyperopt_jobs = 4
+    chopt.run_hyperopt()
 
 
 class ContinuousHyperOpt:
@@ -50,65 +60,9 @@ class ContinuousHyperOpt:
 
         logger.info(f'Instantiated chopt for {self.name}, timerange {self.timerange_str}')
 
-    def _download_data(self, download_args):
-        try:
-            start_download_data(download_args)
-        except Exception as e:
-            logger.error(f"Data download: {e}")
-            return False
-        return True
-
-    def load_data(self):
-        """
-        Download market data for selected timerange
-        """
-
-        logger.info(f'Start data download for {self.name} time range {self.timerange_str}')
-        download_args = {
-            'config': self.config_files,
-            'timeframes': [self.timeframe],
-            'pairs': self.config['pairs'],
-            'timerange': self.timerange_str,
-            'dry_run': True,
-            'dry_run_wallet': 1000,
-        }
-
-        for pair in self.config['pairs']:
-
-            download_args.update({'pairs': [pair]})
-
-            if not self._download_data(download_args):
-
-                data_file_name = self.pair_trades_filename(Path(self.data_dir), pair)
-                data_downloaded = False
-                for i in range(1, 4):
-                    logger.info(
-                        f"Data download finished with error, trying to remove data file and download from scratch ({i})...")
-                    try:
-                        os.remove(data_file_name)
-                    except OSError:
-                        pass
-                    data_downloaded = self._download_data(download_args)
-                    if data_downloaded:
-                        break
-
-                if not data_downloaded:
-                    # nothing helped
-                    # todo: exclude pair
-                    return False
-
-        return True
-
     def save_opted_params(self, params_dict: Dict[str, Any]) -> None:
-
-        dir_path = os.path.join(self.config['user_data_dir'], 'chopt')
-        if not os.path.isdir(dir_path):
-            os.makedirs(dir_path)
-
-        full_path = os.path.join(dir_path, f'{self.bot_name}_{self.strategy}.json')
-        with Path(full_path).open('w') as f:
-            json.dump(params_dict, f, indent=4)
-            f.write("\n")
+        ms = ModelStorage(self.config['user_data_dir'])
+        ms.save(f'{self.bot_name}.{self.strategy}.param', params_dict)
 
     def run_hyperopt(self):
         """
@@ -171,8 +125,4 @@ class ContinuousHyperOpt:
 
         return True
 
-    def pair_trades_filename(self, datadir: Path, pair: str) -> Path:
-        file_extension = 'json.gz'
-        pair_s = pair_to_filename(pair)
-        filename = datadir.joinpath(f'{pair_s}-trades.{file_extension}')
-        return filename
+
