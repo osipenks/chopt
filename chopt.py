@@ -22,7 +22,7 @@ def start_continuous_hyperopt(args: Dict[str, Any]) -> None:
     logger.info('Starting continuous hyperopt...')
 
     chopt = ContinuousHyperOpt(args)
-    chopt.hyperopt_epochs = 25
+    chopt.hyperopt_epochs = 900
     chopt.hyperopt_jobs = 4
     chopt.run_hyperopt()
 
