@@ -23,7 +23,7 @@ def start_trend(args: Dict[str, Any]) -> None:
     trend = Trend(args)
 
     for pair in trend.pair_list:
-        logger.info(f'Trend for {pair}')
+        logger.info(f'Trend for {pair}:')
         trend.run(pair)
 
 
@@ -97,7 +97,7 @@ class Trend:
         pair_label = pair.replace("/", "").lower()
         storage_key = f'trend_forecast.{pair_label}'
         ms.save(storage_key, formatted_dct)
-        logger.info(f'{pair} trend saved to {Path(self.config["user_data_dir"], storage_key)}')
+        logger.info(f'{pair} trend saved to {ms.key_to_path(storage_key)}')
 
         """
         Position size calculation
@@ -121,6 +121,6 @@ class Trend:
 
         storage_key = f'pos_size_trend.{pair_label}'
         ms.save(storage_key, {'pos_size': stake_coef, 'forecast_date': forecast_date})
-        logger.info(f'{pair} position size {stake_coef} saved to {Path(self.config["user_data_dir"], storage_key)}')
+        logger.info(f'{pair} position size {stake_coef} saved to {ms.key_to_path(storage_key)}')
 
         return True

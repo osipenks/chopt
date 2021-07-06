@@ -16,7 +16,7 @@ class ModelStorage:
             os.makedirs(root_path)
         self.root = root_path
 
-    def _key_to_path(self, key: str):
+    def key_to_path(self, key: str):
         folders = key.split('.')
         prev_path = ''
         for folder in folders[:-1]:
@@ -30,13 +30,13 @@ class ModelStorage:
     def save(self, key, value):
         if not isinstance(value, dict):
             raise ValueError(f"Value must be a dictionary to save it in model storage.")
-        db = PickleDB(self._key_to_path(key), False, True)
+        db = PickleDB(self.key_to_path(key), False, True)
         for k, v in value.items():
             db[k] = v
         db.dump()
 
     def load(self, key):
-        pdb = PickleDB(self._key_to_path(key), False, True)
+        pdb = PickleDB(self.key_to_path(key), False, True)
         return pdb.db.copy()
 
     def updates_since(self, key, datetime):
