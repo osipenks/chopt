@@ -102,7 +102,7 @@ class Trend:
         """
         Position size calculation
         """
-        pos_pct_for_max_drawdown = 0.1
+        pos_pct_for_max_drawdown = 0.2
 
         trend_df['pct_change'] = trend_df['trend'].pct_change(72)
         max_drawdown = trend_df["pct_change"].min()
