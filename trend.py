@@ -8,7 +8,7 @@ from prophet import Prophet
 from freqtrade.exchange import timeframe_to_minutes, timeframe_to_prev_date
 from freqtrade.data.history import load_pair_history
 from .utils import setup_configuration
-from .model_storage import ModelStorage
+from .model_storage import ModelStorageChopt
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -92,7 +92,7 @@ class Trend:
         for k, v in dct.items():
             formatted_dct[k.isoformat()] = v
 
-        ms = ModelStorage(Path(self.config['user_data_dir']))
+        ms = ModelStorageChopt(Path(self.config['user_data_dir']))
 
         pair_label = pair.replace("/", "").lower()
         storage_key = f'trend_forecast.{pair_label}'
