@@ -8,7 +8,7 @@ from pickledb import PickleDB
 logger = logging.getLogger(__name__)
 
 
-class ModelStorage:
+class ModelStorageChopt:
 
     def __init__(self, root_folder):
         root_path = os.path.join(root_folder, 'mstorage')

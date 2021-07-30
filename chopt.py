@@ -7,7 +7,7 @@ import datetime
 from freqtrade.enums import RunMode
 
 from .utils import hyperopt_run, setup_chopt_configuration, human_report_hyperopt
-from .model_storage import ModelStorage
+from .model_storage import ModelStorageChopt
 
 
 logger = logging.getLogger(__name__)
@@ -61,7 +61,7 @@ class ContinuousHyperOpt:
         logger.info(f'Instantiated chopt for {self.name}, timerange {self.timerange_str}')
 
     def save_opted_params(self, params_dict: Dict[str, Any]) -> None:
-        ms = ModelStorage(self.config['user_data_dir'])
+        ms = ModelStorageChopt(self.config['user_data_dir'])
         ms.save(f'{self.bot_name}.{self.strategy}.param', params_dict)
 
     def run_hyperopt(self):
