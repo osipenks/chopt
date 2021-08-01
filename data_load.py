@@ -39,7 +39,8 @@ class DataDownload:
         self.config['dry_run'] = True
 
         self.bot_name = self.config['bot_name']
-        self.timeframe = self.config['timeframe']
+        self.timeframe = self.config.get('timeframe', '5m')
+        self.timeframes = self.config.get('timeframes', [self.timeframe])
         self.pair_list = self.config["pairs"]
         self.data_dir = self.config['datadir']
 
@@ -75,7 +76,7 @@ class DataDownload:
         logger.info(f'Start data download for {self.name} time range {self.timerange_str}')
         download_args = {
             'config': self.config_files,
-            'timeframes': [self.timeframe],
+            'timeframes': self.timeframes,
             'pairs': self.pair_list,
             'timerange': self.timerange_str,
             'dry_run': True,
